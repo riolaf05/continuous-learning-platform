@@ -4,9 +4,9 @@ import tensorflow as tf
 import mlflow
 from mlflow import tensorflow
 
-BASE_DIR=r"C:\Users\lafacero\Desktop\mlflow test\\"
-MODEL_DIR=r"C:\Users\lafacero\Desktop\mlflow test\models\\"
-MLFLOW_MODEL_DIR=r"C:\Users\lafacero\Desktop\mlflow test\mlflow_models\\"
+BASE_DIR=r"C:\Users\lafacero\Desktop\covid-mlflow\\"
+MODEL_DIR=r"C:\Users\lafacero\Desktop\covid-mlflow\models\\"
+MLFLOW_MODEL_DIR=r"C:\Users\lafacero\Desktop\covid-mlflow\mlflow_models\\"
 
 # load the dataset
 dataset = loadtxt(BASE_DIR+'pima-indians-diabetes.csv', delimiter=',')
@@ -24,13 +24,20 @@ model.add(tf.keras.layers.Dense(1, activation='sigmoid'))
 # compile the keras model
 model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
 
-with mlflow.start_run():
+#Set experiment
+mlflow.set_experiment("/my-experiment")
         
+#set MLflow server
+mlflow.set_tracking_uri('http://1f0530a662c0.ngrok.io')
+
+
+with mlflow.start_run(experiment_id=0):
+
     # fit the keras model on the dataset
     history = model.fit(X, y, epochs=10, batch_size=10)
 
     # evaluate the keras model
-    acc = history.history['accuracy']
+    acc = history.history['acc']
     #val_acc = history.history['val_accuracy']
     loss = history.history['loss']
     #val_loss = history.history['val_loss']
@@ -57,3 +64,4 @@ with mlflow.start_run():
     else:
         mlflow.sklearn.log_model(lr, "model")
     '''
+mlflow.end_run()

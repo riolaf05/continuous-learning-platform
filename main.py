@@ -15,7 +15,7 @@ from tensorflow.math import confusion_matrix
 import mlflow
 from random import shuffle
 
-BASE_DIR=r"C:\Users\lafacero\Desktop\mlflow test"
+BASE_DIR=r"C:\Users\lafacero\Desktop\covid-mlflow"
 IMG_SIZE = (200, 200)
 BATCH_SIZE=16
 

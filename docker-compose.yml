@@ -2,17 +2,15 @@ version: '3'
 
 services:
 
-#  frontend:
-#    image: frontend-container:v1
-#    restart: always
-#    networks:
-#        - apinetwork
-#    expose:
-#        - "8100"
-#    ports:
-#        - "8100:8100"
-#    depends_on:
-#      - nginx
+  mlflowui:
+    build: ./MlflowUI/.
+    restart: always
+    networks:
+        - jenkins
+    expose:
+        - "5000"
+    ports:
+        - "5000:5000"
 
   jenkins-docker:
     image: docker:dind
