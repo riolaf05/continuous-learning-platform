@@ -1,0 +1,13 @@
+artifact_path: C:\Users\lafacero\Desktop\covid-mlflow\\mlflow-models
+flavors:
+  python_function:
+    env: conda.yaml
+    loader_module: mlflow.tensorflow
+    python_version: 3.7.4
+  tensorflow:
+    meta_graph_tags:
+    - serve
+    saved_model_dir: tfmodel
+    signature_def_key: serving_default
+run_id: 4e396bcf65f84aadb2272c4812161237
+utc_time_created: '2020-07-20 16:35:28.913669'
