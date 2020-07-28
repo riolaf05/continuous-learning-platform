@@ -1,0 +1,7 @@
+pandas
+numpy
+python-opencv
+matplotlib
+seaborn
+shutil
+sklearn

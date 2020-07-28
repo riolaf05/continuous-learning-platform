@@ -1,59 +1,12 @@
-import os
-import pandas as pd
-import numpy as np
-import cv2
-import matplotlib as plt
-import seaborn as sn
-from shutil import copyfile
-import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.models import Sequential 
 from tensorflow.keras.layers import Dense, Flatten, Conv2D, MaxPooling2D, Dropout 
 import tensorflow as tf
 from tensorflow.math import confusion_matrix
-import mlflow
-from random import shuffle
-
-BASE_DIR=r"C:\Users\lafacero\Desktop\covid-mlflow"
-IMG_SIZE = (200, 200)
-BATCH_SIZE=16
 
 x = [] #features
 y = [] #target
-
-def copy_sample(imgs_list, imgs_path, cls):
-  for img in imgs_list:
-    copyfile(imgs_path+img, os.path.join(BASE_DIR, 'dataset/'+cls+"/"+img))
-
-def show_samples(x):
-  fig = plt.figure()
-  for i in range(x.shape[0]):
-    plot = fig.add_subplot(1, x.shape[0], i+1)
-    plt.imshow(x[i])
-    plt.axis("off")
-
-if(not os.path.isdir(os.path.join(BASE_DIR, "dataset"))):
-  os.mkdir(os.path.join(BASE_DIR, "dataset/"))
-  os.mkdir(os.path.join(BASE_DIR, "dataset/covid"))
-  os.mkdir(os.path.join(BASE_DIR, "dataset/normal"))
-
-df = pd.read_csv(os.path.join(BASE_DIR, "covid-chestxray-dataset/metadata.csv"))
-
-df = df[(df["finding"]=="COVID-19") & (df["view"]=="PA")]
-
-imgs_covid=list(df["filename"])
-
-imgs_covid_count=len(imgs_covid)
-
-copy_sample(imgs_covid, os.path.join(BASE_DIR, "covid-chestxray-dataset/images/"), "covid")
-
-imgs_normal = os.listdir(os.path.join(BASE_DIR, "chest_xray/train/NORMAL/"))
-
-shuffle(imgs_normal)
-imgs_normal = imgs_normal[:imgs_covid_count]
-
-copy_sample(imgs_normal, "chest_xray/train/NORMAL/", "normal")
 
 encoding = [("normal", 0), ("covid", 1)]
 
@@ -73,7 +26,7 @@ for folder, label in encoding:
     x.append(img)
     y.append(label)
 
-#converto le liste in arrya numpy
+#converto le liste in array numpy
 x = np.array(x)
 y = np.array(y)
 
