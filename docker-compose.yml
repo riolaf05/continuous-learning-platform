@@ -12,24 +12,26 @@ services:
     ports:
         - "5000:5000"
 
-  jenkins-docker:
-    image: docker:dind
-    #build: .
-    restart: always
-    #volumes: ['./api:/api']
-    networks:
-      - jenkins
-    expose:
-      - "2376"
-    ports:
-      - "2376:2376"
-    environment:
-      - DOCKER_TLS_CERTDIR=/certs
-    privileged: true
+  #jenkins-docker:
+  #  image: docker:dind
+  #  #build: .
+  #  restart: always
+  #  #volumes: ['./api:/api']
+  #  networks:
+  #    - jenkins
+  #  expose:
+  #    - "2376"
+  #  ports:
+  #    - "2376:2376"
+  #  environment:
+  #    - DOCKER_TLS_CERTDIR=/certs
+  #  privileged: true
 
-  jenkins-blueocean:
-    image: jenkinsci/blueocean
+  jenkins:
+    #image: jenkinsci/blueocean
+    build: ./Jenkins/.
     restart: always
+    volumes: ['/var/run/docker.sock:/var/run/docker.sock', '${HOME}/jenkins_home:/var/jenkins_home']
     networks:
       - jenkins
     expose:
@@ -38,8 +40,8 @@ services:
     ports:
       - "50000:50000"
       - "8080:8080"
-    depends_on:
-      - jenkins-docker
+    #depends_on:
+    #  - jenkins-docker
     environment:
       - DOCKER_HOST=tcp://docker:2376
       - DOCKER_CERT_PATH=/certs/client
