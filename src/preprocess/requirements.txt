@@ -1,7 +1,7 @@
 pandas
 numpy
-python-opencv
+opencv-python
 matplotlib
 seaborn
-shutil
 sklearn
+argparse
