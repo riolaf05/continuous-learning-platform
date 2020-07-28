@@ -7,7 +7,6 @@ import seaborn as sn
 from shutil import copyfile
 import matplotlib.pyplot as plt
 from random import shuffle
-import argparse
 
 BASE_DIR='/preprocess/data'
 
@@ -23,13 +22,6 @@ def show_samples(x):
     plt.axis("off")
 
 def main():
-  parser = argparse.ArgumentParser(description='Input arguments')
-  parser.add_argument('--img-size', type=int, help='Image size', default=200)
-  parser.add_argument('--batch-size', type=int, help='Batch size', default=16)
-  args = parser.parse_args()
-
-  IMG_SIZE = (args.img_size, args.img_size)
-  BATCH_SIZE=args.batch_size
 
   if(not os.path.isdir(os.path.join(BASE_DIR, "dataset"))):
     os.mkdir(os.path.join(BASE_DIR, "dataset/"))
