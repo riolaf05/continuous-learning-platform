@@ -1,0 +1,1 @@
+mlflow run src/train/ -b local --no-conda -e train -P img_size=200 -P batch_size=16 -P tracking_url=https://0a8211552d93.ngrok.io -P epochs=100
