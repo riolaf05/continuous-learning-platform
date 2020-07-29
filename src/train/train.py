@@ -10,17 +10,21 @@ import tensorflow as tf
 from tensorflow.math import confusion_matrix
 import argparse
 from numpy import loadtxt
+import mlflow
+from mlflow import tensorflow
 
 def main():
     parser = argparse.ArgumentParser(description='Input arguments')
     parser.add_argument('--img-size', type=int, help='Image size', default=200)
     parser.add_argument('--batch-size', type=int, help='Batch size', default=16)
     parser.add_argument('--tracking-url', type=str, help='MLFlow server')
+    parser.add_argument('--epochs', type=str, help='Epochs')
     args = parser.parse_args()
+
     x = [] #features
     y = [] #target
 
-    BASE_DIR='/preprocess/data'
+    BASE_DIR='/train/data'
     IMG_SIZE = (args.img_size, args.img_size)
     BATCH_SIZE=args.batch_size
 
@@ -84,7 +88,7 @@ def main():
     mlflow.set_tracking_uri(args.tracking_url)
     with mlflow.start_run(experiment_id=0):
 
-        model.fit(train_generator, epochs=100, steps_per_epoch=x_train.shape[0]/BATCH_SIZE)
+        model.fit(train_generator, epochs=args.epochs, steps_per_epoch=x_train.shape[0]/BATCH_SIZE)
 
         metrics_train = model.evaluate(x_train, y_train)
         metrics_test = model.evaluate(x_test, y_test)
@@ -103,3 +107,6 @@ def main():
 
         #sn.heatmap(df_cm, annot=True)
     mlflow.end_run()
+
+if __name__ == "__main__":
+    main()

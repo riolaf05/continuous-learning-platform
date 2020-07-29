@@ -2,6 +2,5 @@ pandas
 numpy
 opencv-python
 matplotlib
-seaborn
 sklearn
 argparse

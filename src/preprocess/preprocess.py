@@ -3,7 +3,6 @@ import pandas as pd
 import numpy as np
 import cv2
 import matplotlib as plt
-import seaborn as sn
 from shutil import copyfile
 import matplotlib.pyplot as plt
 from random import shuffle

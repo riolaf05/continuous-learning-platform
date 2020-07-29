@@ -12,26 +12,26 @@ services:
     ports:
         - "5000:5000"
 
-  #jenkins-docker:
-  #  image: docker:dind
-  #  #build: .
-  #  restart: always
-  #  #volumes: ['./api:/api']
-  #  networks:
-  #    - jenkins
-  #  expose:
-  #    - "2376"
-  #  ports:
-  #    - "2376:2376"
-  #  environment:
-  #    - DOCKER_TLS_CERTDIR=/certs
-  #  privileged: true
+  rabbitmq:
+    image: rabbitmq:3-management
+    restart: always
+    volumes: ['/volumes/rabbitmq:/var/lib/rabbitmq']
+    networks:
+      - jenkins
+    expose:
+      - "5672"
+      - "15672"
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+    #privileged: true
 
   jenkins:
     #image: jenkinsci/blueocean
     build: ./Jenkins/.
     restart: always
-    volumes: ['/var/run/docker.sock:/var/run/docker.sock', '${HOME}/jenkins_home:/var/jenkins_home']
+    volumes: ['/var/run/docker.sock:/var/run/docker.sock', '${HOME}/jenkins_home:/var/jenkins_home', '/data/:/data/']
     networks:
       - jenkins
     expose:
