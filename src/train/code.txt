@@ -1,1 +1,1 @@
-mlflow run src/train/ -b local --no-conda -e train -P img_size=200 -P batch_size=16 -P tracking_url=https://0a8211552d93.ngrok.io -P epochs=100
+docker run -it -v /media/sf_Shared/data/:/train/data/ rio05docker/covid_continuos_learning:trainv1 python3 train/train.py --img-size=200 --batch-size=16 --tracking-url=http://7c3345a8d632.ngrok.io --epochs=1 --experiment=exp1
