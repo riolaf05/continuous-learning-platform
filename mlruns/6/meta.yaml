@@ -1,0 +1,4 @@
+artifact_location: file:///mlflow/tmp/mlruns/6
+experiment_id: '6'
+lifecycle_stage: active
+name: exp7

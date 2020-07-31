@@ -13,4 +13,5 @@ entry_points:
       batch_size: {type: number, default: 16}
       tracking_url: {type: string}
       epochs: {type: number, default: 100}
-    command: "python3 /train/train.py --img-size='{img_size}' --batch-size='{batch_size}' --tracking-url='{tracking_url}' --epochs='{epochs}'"
+      experiment: {type: string}
+    command: "python3 /train/train.py --img-size='{img_size}' --batch-size='{batch_size}' --tracking-url='{tracking_url}' --epochs='{epochs}' --experiment='{experiment}'"

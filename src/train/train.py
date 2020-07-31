@@ -12,13 +12,15 @@ import argparse
 from numpy import loadtxt
 import mlflow
 from mlflow import tensorflow
+from tensorflow.keras.optimizers import Adam
 
 def main():
     parser = argparse.ArgumentParser(description='Input arguments')
     parser.add_argument('--img-size', type=int, help='Image size', default=200)
     parser.add_argument('--batch-size', type=int, help='Batch size', default=16)
     parser.add_argument('--tracking-url', type=str, help='MLFlow server')
-    parser.add_argument('--epochs', type=str, help='Epochs')
+    parser.add_argument('--epochs', type=int, help='Epochs')
+    parser.add_argument('--experiment', type=str, help='Experiment name')
     args = parser.parse_args()
 
     x = [] #features
@@ -67,34 +69,54 @@ def main():
     )
 
     ### Train
-    model = tf.keras.Sequential()
-    model.add(tf.keras.layers.Conv2D(filters=32, kernel_size=3, activation="relu", input_shape=(IMG_SIZE[0], IMG_SIZE[0], 1)))
-    model.add(tf.keras.layers.MaxPooling2D(pool_size=2))
-    model.add(tf.keras.layers.Dropout(0.6))
-    model.add(tf.keras.layers.Conv2D(filters=32, kernel_size=3, activation="relu"))
-    model.add(tf.keras.layers.MaxPooling2D(pool_size=2))
-    model.add(tf.keras.layers.Dropout(0.6))
-    model.add(tf.keras.layers.Flatten())
-    model.add(tf.keras.layers.Dense(64, activation="relu"))
-    model.add(tf.keras.layers.Dropout(0.6))
-    model.add(tf.keras.layers.Dense(1, activation="sigmoid"))
+    model = Sequential()
+    model.add(Conv2D(filters=32, kernel_size=3, activation="relu", input_shape=(IMG_SIZE[0], IMG_SIZE[0], 1)))
+    model.add(MaxPooling2D(pool_size=2))
+    model.add(Dropout(0.6))
+    model.add(Conv2D(filters=32, kernel_size=3, activation="relu"))
+    model.add(MaxPooling2D(pool_size=2))
+    model.add(Dropout(0.6))
+    model.add(Flatten())
+    model.add(Dense(64, activation="relu"))
+    model.add(Dropout(0.6))
+    model.add(Dense(1, activation="sigmoid"))
 
     model.compile(loss="binary_crossentropy", optimizer="adam", metrics=["accuracy"])
 
-    #Set experiment
-    mlflow.set_experiment("/my-experiment")
-            
     #set MLflow server
     mlflow.set_tracking_uri(args.tracking_url)
-    with mlflow.start_run(experiment_id=0):
 
-        model.fit(train_generator, epochs=args.epochs, steps_per_epoch=x_train.shape[0]/BATCH_SIZE)
+    #Set experiment
+    if mlflow.get_experiment_by_name(args.experiment) != None:
+        exp_id = mlflow.set_experiment(args.experiment)
+    else: 
+        exp_id = mlflow.create_experiment(args.experiment)
+
+    #Set tags
+    tags={}
+    tags['name']=args.experiment
+    mlflow.set_tags(tags)
+
+    if mlflow.active_run():
+        mlflow.end_run()
+
+    with mlflow.start_run(run_id=None, experiment_id=exp_id, run_name=None, nested=False):
+
+        history = model.fit(train_generator, epochs=args.epochs, steps_per_epoch=x_train.shape[0]/BATCH_SIZE)
+
+        acc = history.history['acc'][-1]
+        loss = history.history['loss'][-1]
 
         metrics_train = model.evaluate(x_train, y_train)
         metrics_test = model.evaluate(x_test, y_test)
 
         print("Train accuracy =  %.4f - Train loss= %.4f" % (metrics_train[1], metrics_train[0]))
         print("Test accuracy =  %.4f - Test loss= %.4f" % (metrics_test[1], metrics_test[0]))
+
+        mlflow.tensorflow.autolog()
+
+        mobilenet_save_path = os.path.join(BASE_DIR, "models")
+        tf.saved_model.save(model, mobilenet_save_path)
 
         mlflow.tensorflow.log_model(model, "model", registered_model_name="TestModel")
 

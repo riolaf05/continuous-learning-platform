@@ -1,0 +1,15 @@
+artifact_uri: file:///home/rosario/Codice/covid19-continuous-learning/mlruns/0/e56e529e2ec74c728878ab3165594fa4/artifacts
+end_time: 1596183897463
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: deleted
+name: ''
+run_id: e56e529e2ec74c728878ab3165594fa4
+run_uuid: e56e529e2ec74c728878ab3165594fa4
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1596183859557
+status: 4
+tags: []
+user_id: rosario
