@@ -3,7 +3,7 @@ version: '3'
 services:
 
   mlflowui:
-    build: ./MlflowUI/.
+    build: ./mlflowUI/.
     restart: always
     networks:
         - jenkins
@@ -29,7 +29,7 @@ services:
 
   jenkins:
     #image: jenkinsci/blueocean
-    build: ./Jenkins/.
+    build: ./jenkins/.
     restart: always
     volumes: ['/var/run/docker.sock:/var/run/docker.sock', '${HOME}/jenkins_home:/var/jenkins_home', '/data/:/data/']
     networks:
