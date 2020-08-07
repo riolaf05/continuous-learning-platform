@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.21.0 (992df58d8)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: mlflowui
+  name: mlflowui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: mlflowui
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.21.0 (992df58d8)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/jenkins: "true"
+        io.kompose.service: mlflowui
+    spec:
+      containers:
+      - env:
+        - name: LANG
+          value: C.UTF-8
+        - name: LC_ALL
+          value: C.UTF-8
+        image: mlflowui
+        imagePullPolicy: ""
+        name: mlflowui
+        ports:
+        - containerPort: 5000
+        resources: {}
+        volumeMounts:
+        - mountPath: /tmp/mlflowruns
+          name: mlflowui-claim0
+      restartPolicy: Always
+      serviceAccountName: ""
+      volumes:
+      - name: mlflowui-claim0
+        persistentVolumeClaim:
+          claimName: mlflowui-claim0
+status: {}
