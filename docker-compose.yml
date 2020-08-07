@@ -5,25 +5,29 @@ services:
   mlflowui:
     build: ./mlflowUI/.
     restart: always
+    volumes: ['/mlflowrunstore:/tmp/mlflowruns'] 
     networks:
         - jenkins
     expose:
         - "5000"
     ports:
         - "5000:5000"
+    environment: 
+      - LC_ALL=C.UTF-8 
+      - LANG=C.UTF-8
 
-  rabbitmq:
-    image: rabbitmq:3-management
-    restart: always
-    volumes: ['/volumes/rabbitmq:/var/lib/rabbitmq']
-    networks:
-      - jenkins
-    expose:
-      - "5672"
-      - "15672"
-    ports:
-      - "5672:5672"
-      - "15672:15672"
+  #rabbitmq:
+  #  image: rabbitmq:3-management
+  #  restart: always
+  #  volumes: ['/volumes/rabbitmq:/var/lib/rabbitmq']
+  #  networks:
+  #    - jenkins
+  #  expose:
+  #    - "5672"
+  #    - "15672"
+  #  ports:
+  #    - "5672:5672"
+  #    - "15672:15672"
     #environment:
     #privileged: true
 
@@ -31,7 +35,10 @@ services:
     #image: jenkinsci/blueocean
     build: ./jenkins/.
     restart: always
-    volumes: ['/var/run/docker.sock:/var/run/docker.sock', '/data/:/data/']
+    volumes: ['/var/run/docker.sock:/var/run/docker.sock', 
+              '/data/:/data/',
+              #'${HOME}/jenkins_home:/var/jenkins_home',
+              '/mlflowrunstore:/tmp/mlflowruns']  
     networks:
       - jenkins
     expose:
