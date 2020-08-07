@@ -21,7 +21,7 @@ TODO
 
 ### Notes
 
-![Figure 1](https://github.com/riolaf05/continuous-learning-platform/tree/master/img/continuous_learning_flow.jpg)
+![Figure 1](https://github.com/riolaf05/continuous-learning-platform/blob/master/img/continuous_learning_flow.jpg)
 
 * As seen in Figure 1, the training job Dockers and the MLFLow UI Docker must share the same volume. This is because the former must write artifacts file which the latter must log into the MLFLow UI.
 
