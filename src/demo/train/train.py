@@ -34,7 +34,7 @@ model = keras.Sequential([
 ])
 
 #set MLflow server
-tracking_uri="http://35479c17ae95.ngrok.io"
+tracking_uri="http://1a420b445ed3.ngrok.io"
 mlflow.set_tracking_uri(tracking_uri)
 
 #Set experiment
