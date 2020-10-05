@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mlflowui
+  labels:
+    rioiotplatform: mlflowui
+spec:
+  replicas: 1
+  revisionHistoryLimit: 5
+  selector:
+    matchLabels:
+      app: mlflowui
+  template:
+    metadata:
+      labels:
+        app: mlflowui
+    spec:
+      #nodeName: raspberrypi
+      containers:
+      - image: rio05docker/covid_continuos_learning/mlflowui_arm
+        imagePullPolicy: Always
+        name: mlflowui
+        resources:
+            limits:
+                memory: "1Gi"
+                cpu: "1"
+            requests:
+                cpu: "100m"
+                memory: "30Mi"
+        #env:
+        #- name: 
+        #  value: 
+        ports:
+        - containerPort: 5000
+        #volumeMounts:
+        #- mountPath: /var/lib/mysql
+        #  name: mysql-volume
+      restartPolicy: Always
+      #volumes:
+      #- name: mysql-volume
+      #  persistentVolumeClaim:
+      #    claimName: mysql-claim
