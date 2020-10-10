@@ -17,7 +17,7 @@ spec:
     spec:
       #nodeName: raspberrypi
       containers:
-      - image: rio05docker/covid_continuos_learning/mlflowui_arm
+      - image: rio05docker/continuos_learning_ui:latest
         imagePullPolicy: Always
         name: mlflowui
         resources:
