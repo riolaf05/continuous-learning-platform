@@ -3,17 +3,17 @@ kind: Deployment
 metadata:
   name: mlflowui
   labels:
-    rioiotplatform: mlflowui
+    k8s-app: mlflowui
 spec:
   replicas: 1
   revisionHistoryLimit: 5
   selector:
     matchLabels:
-      app: mlflowui
+      k8s-app: mlflowui
   template:
     metadata:
       labels:
-        app: mlflowui
+        k8s-app: mlflowui
     spec:
       #nodeName: raspberrypi
       containers:
