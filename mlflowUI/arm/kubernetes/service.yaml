@@ -4,7 +4,7 @@ metadata:
   name: mlflowui-service
 spec:
   selector:
-    app: mlflowui
+    k8s-app: mlflowui
   ports:
     - protocol: TCP
       port: 5000
