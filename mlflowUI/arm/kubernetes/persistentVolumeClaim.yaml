@@ -1,0 +1,14 @@
+#Pods use PersistentVolumeClaims to request physical storage.
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: mlflow-claim
+  labels:
+    app: mlflowui
+spec:
+  storageClassName: local-storage
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi

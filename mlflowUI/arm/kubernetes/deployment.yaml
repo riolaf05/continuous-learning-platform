@@ -15,7 +15,7 @@ spec:
       labels:
         k8s-app: mlflowui
     spec:
-      #nodeName: raspberrypi
+      nodeName: raspberrypi1
       containers:
       - image: rio05docker/continuos_learning_ui:latest
         imagePullPolicy: Always
@@ -27,16 +27,18 @@ spec:
             requests:
                 cpu: "100m"
                 memory: "30Mi"
-        #env:
-        #- name: 
-        #  value: 
+        env:
+        - name: LANG
+          value: C.UTF-8
+        - name: LC_ALL
+          value: C.UTF-8
         ports:
         - containerPort: 5000
-        #volumeMounts:
-        #- mountPath: /var/lib/mysql
-        #  name: mysql-volume
+        volumeMounts:
+        - mountPath: /tmp/mlflowruns/
+          name: mlflow-volume
       restartPolicy: Always
-      #volumes:
-      #- name: mysql-volume
-      #  persistentVolumeClaim:
-      #    claimName: mysql-claim
+      volumes:
+      - name: mlflow-volume
+        persistentVolumeClaim:
+          claimName: mlflow-claim
